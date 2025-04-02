@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:foodies/add_product.dart';
+import 'package:foodies/edit_product.dart';
 import 'package:foodies/main.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -161,6 +163,12 @@ class _ProductManagementState extends State<ProductManagement> {
               padding: EdgeInsets.zero,
               child: Icon(CupertinoIcons.add, color: CupertinoColors.black),
               onPressed: () {
+                buttonStatus
+                    ? Navigator.pushReplacement(
+                      context,
+                      CupertinoPageRoute(builder: (context) => AddProduct()),
+                    )
+                    : null;
               },
             ),
           ),
