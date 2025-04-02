@@ -1,4 +1,4 @@
-String server = "https://lightseagreen-squirrel-353709.hostingersite.com/";
+String server = "https://phpconfig.fun/";
 //String server = "http://192.168.144.203/Foodies/";
 
 List<dynamic> products = [];

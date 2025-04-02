@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:foodies/checkreceipt.dart';
 import 'package:foodies/products.dart';
+import 'package:foodies/purchase_success.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'dart:convert';
@@ -39,7 +41,7 @@ class _CartState extends State<Cart> {
         });
       });
 
-      final response = await http.get(Uri.parse("${server}cart.php"));
+      final response = await http.get(Uri.parse(server + "cart.php"));
 
       if (response.statusCode == 200) {
         print("FETCHED");
@@ -129,7 +131,7 @@ class _CartState extends State<Cart> {
 
     try {
       final response = await http.post(
-        Uri.parse("${server}checkout.php"),
+        Uri.parse(server + "checkout.php"),
         body: json.encode(requestData),
       );
 
@@ -182,6 +184,11 @@ class _CartState extends State<Cart> {
             buttonStatus = true;
           });
           Timer(Duration(seconds: 1), () {
+            Navigator.pushReplacement(
+              context,
+
+              CupertinoPageRoute(builder: (context) => PurchaseSuccessCart()),
+            );
           });
         });
 
@@ -243,7 +250,6 @@ class _CartState extends State<Cart> {
     super.initState();
   }
 
-  @override
   Widget build(BuildContext context) {
     return isLoading
         ? CupertinoPageScaffold(
@@ -327,7 +333,7 @@ class _CartState extends State<Cart> {
 
                     Future<void> deleteproductcart() async {
                       final response = await http.post(
-                        Uri.parse("${server}deleteproductcart.php"),
+                        Uri.parse(server + "deleteproductcart.php"),
                         body: {"id": items[index]["id"]},
                       );
 
@@ -352,7 +358,7 @@ class _CartState extends State<Cart> {
 
                     Future<void> buyNow() async {
                       final response = await http.post(
-                        Uri.parse("${server}buyproduct.php"),
+                        Uri.parse(server + "buyproduct.php"),
                         body: {
                           "cartid": items[index]["cartid"].toString(),
                           "productid": items[index]["id"].toString(),
@@ -402,6 +408,13 @@ class _CartState extends State<Cart> {
                             buttonStatus = true;
                           });
                           Timer(Duration(seconds: 1), () {
+                            Navigator.pushReplacement(
+                              context,
+
+                              CupertinoPageRoute(
+                                builder: (context) => PurchaseSuccess(),
+                              ),
+                            );
                           });
                         });
                         print("PAGEROUTE  DONE");
