@@ -280,6 +280,22 @@ class _ProductManagementState extends State<ProductManagement> {
                                     color: CupertinoColors.systemGreen,
                                   ),
                                   onPressed: () {
+                                    setState(() {
+                                      editproductname = products[index]["name"];
+                                      editproductstock =
+                                          products[index]["stock"];
+                                      editproductprice =
+                                          products[index]["price"];
+                                      editproductid = products[index]["id"];
+                                      editproductimage =
+                                          products[index]["productimage"];
+                                    });
+                                    Navigator.pushReplacement(
+                                      context,
+                                      CupertinoPageRoute(
+                                        builder: (context) => EditProduct(),
+                                      ),
+                                    );
                                   },
                                 ),
                                 const SizedBox(height: 10),
