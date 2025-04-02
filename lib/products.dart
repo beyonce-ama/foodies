@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:foodies/cart.dart';
 import 'package:foodies/main.dart';
+import 'package:foodies/purchase_success.dart';
 import 'package:foodies/purchased.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -33,7 +34,7 @@ class _ProductsState extends State<Products> {
         });
       });
 
-      final response = await http.get(Uri.parse("${server}read_products.php"));
+      final response = await http.get(Uri.parse(server + "read_products.php"));
 
       if (response.statusCode == 200) {
         setState(() {
@@ -91,7 +92,6 @@ class _ProductsState extends State<Products> {
     super.initState();
   }
 
-  @override
   Widget build(BuildContext context) {
     return isLoading
         ? CupertinoPageScaffold(
@@ -144,7 +144,7 @@ class _ProductsState extends State<Products> {
         )
         : CupertinoPageScaffold(
           navigationBar: CupertinoNavigationBar(
-            leading: SizedBox(
+            leading: Container(
               width: MediaQuery.of(context).size.width * 0.5,
               child: Row(
                 children: [
@@ -176,7 +176,7 @@ class _ProductsState extends State<Products> {
               ),
             ),
 
-            trailing: SizedBox(
+            trailing: Container(
               width: MediaQuery.of(context).size.width * 0.5,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -228,7 +228,7 @@ class _ProductsState extends State<Products> {
                 Future<void> addtoCart() async {
                   try {
                     final response = await http.post(
-                      Uri.parse("${server}addtocart.php"),
+                      Uri.parse(server + "addtocart.php"),
                       body: {
                         "productid": item[index]["id"],
                         "stock": quantities[index].toString(),
@@ -290,7 +290,7 @@ class _ProductsState extends State<Products> {
 
                 Future<void> buy() async {
                   final response = await http.post(
-                    Uri.parse("${server}buy.php"),
+                    Uri.parse(server + "buy.php"),
                     body: {
                       "productid": item[index]["id"],
                       "name": item[index]["name"],
@@ -338,6 +338,12 @@ class _ProductsState extends State<Products> {
                         buttonStatus = true;
                       });
                       Timer(Duration(seconds: 1), () {
+                        Navigator.pushReplacement(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (context) => PurchaseSuccess(),
+                          ),
+                        );
                       });
                     });
 
@@ -382,7 +388,7 @@ class _ProductsState extends State<Products> {
                               ),
                             ),
                           ),
-                          const SizedBox(width: 5),
+                          const SizedBox(width: 4),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -448,7 +454,7 @@ class _ProductsState extends State<Products> {
                                           padding: EdgeInsets.zero,
                                           child: const Icon(
                                             CupertinoIcons.minus,
-                                            size: 18,
+                                            size: 15,
                                             color: CupertinoColors.black,
                                           ),
                                           onPressed: () {
@@ -462,7 +468,7 @@ class _ProductsState extends State<Products> {
                                         Text(
                                           "${quantities[index]}",
                                           style: const TextStyle(
-                                            fontSize: 14,
+                                            fontSize: 13,
                                             fontWeight: FontWeight.w400,
                                           ),
                                         ),
@@ -470,7 +476,7 @@ class _ProductsState extends State<Products> {
                                           padding: EdgeInsets.zero,
                                           child: const Icon(
                                             CupertinoIcons.add,
-                                            size: 18,
+                                            size: 15,
                                             color: CupertinoColors.black,
                                           ),
                                           onPressed: () {
