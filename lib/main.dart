@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:foodies/product_management.dart';
+import 'package:foodies/products.dart';
 import 'package:flutter/material.dart';
 
 void main() =>
@@ -41,6 +43,13 @@ class _HomePageState extends State<HomePage> {
                             color: CupertinoColors.black,
                           ),
                           onPressed: () {
+                            Navigator.pop(context);
+                            Navigator.pushReplacement(
+                              context,
+                              CupertinoPageRoute(
+                                builder: (context) => ProductManagement(),
+                              ),
+                            );
                           },
                         ),
                       ],
@@ -274,7 +283,10 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   onPressed: () {
-                    
+                    Navigator.pushReplacement(
+                      context,
+                      CupertinoPageRoute(builder: (context) => Products()),
+                    );
                   },
                 ),
               ),
