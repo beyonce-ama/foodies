@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
+import 'package:foodies/cart.dart';
 import 'package:foodies/main.dart';
+import 'package:foodies/purchased.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'backend.dart';
@@ -186,6 +188,12 @@ class _ProductsState extends State<Products> {
                       color: CupertinoColors.black,
                     ),
                     onPressed: () {
+                      buttonStatus
+                          ? Navigator.pushReplacement(
+                            context,
+                            CupertinoPageRoute(builder: (context) => Cart()),
+                          )
+                          : null;
                     },
                   ),
 
@@ -196,6 +204,14 @@ class _ProductsState extends State<Products> {
                       color: CupertinoColors.black,
                     ),
                     onPressed: () {
+                      buttonStatus
+                          ? Navigator.pushReplacement(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) => Purchased(),
+                            ),
+                          )
+                          : null;
                     },
                   ),
                 ],
