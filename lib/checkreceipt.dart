@@ -13,6 +13,23 @@ class PurchaseSuccessCart extends StatefulWidget {
 class _PurchaseSuccessStateCart extends State<PurchaseSuccessCart> {
   @override
   Widget build(BuildContext context) {
+    if (receiptItems.isEmpty) {
+      return CupertinoPageScaffold(
+        navigationBar: CupertinoNavigationBar(
+          middle: Text("Transaction Receipt"),
+        ),
+        child: Center(child: Text("No transaction details available.")),
+      );
+    }
+
+    double grandTotal = 0;
+    for (var item in receiptItems) {
+      double quantity = double.parse(item['quantity']);
+      double price = double.parse(item['price']);
+      grandTotal += quantity * price;
+    }
+    print("Receipt Items: $receiptItems");
+
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         leading: CupertinoButton(
@@ -33,7 +50,6 @@ class _PurchaseSuccessStateCart extends State<PurchaseSuccessCart> {
           style: TextStyle(letterSpacing: 1.1, fontWeight: FontWeight.w500),
         ),
       ),
-
       child: SafeArea(
         child: Padding(
           padding: EdgeInsets.fromLTRB(40, 30, 40, 20),
@@ -51,7 +67,7 @@ class _PurchaseSuccessStateCart extends State<PurchaseSuccessCart> {
                     ),
                     SizedBox(height: 10),
                     Text(
-                      "Purchased Successful",
+                      "Purchase Successful",
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -75,74 +91,67 @@ class _PurchaseSuccessStateCart extends State<PurchaseSuccessCart> {
                           SizedBox(height: 10),
 
                           ...receiptItems.map((item) {
+                            int quantity =
+                                int.tryParse(
+                                  item['quantity']?.toString() ?? '0',
+                                ) ??
+                                0;
+                            double price =
+                                double.tryParse(
+                                  item['price']?.toString() ?? '0',
+                                ) ??
+                                0;
+
                             return Padding(
                               padding: const EdgeInsets.all(15.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        "Product: ${item['product']}",
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          color: Colors.black54,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                      Text(
-                                        "Price: ₱${item['price']}",
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          color: Colors.black54,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                    ],
+                                  Text(
+                                    "${item['product']}".padRight(10),
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      color: Colors.black54,
+                                      fontWeight: FontWeight.w400,
+                                    ),
                                   ),
-                                  SizedBox(height: 10),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "Quantity: ${item['quantity']}",
-                                            style: TextStyle(
-                                              fontSize: 15,
-                                              color: Colors.black54,
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Text(
-                                        "Total: ₱${item['total']}",
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          color: Colors.black54,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                    ],
+                                  Text(
+                                    "$quantity x \$${price}",
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      color: Colors.black54,
+                                      fontWeight: FontWeight.w400,
+                                    ),
                                   ),
-                                  SizedBox(height: 10),
                                 ],
                               ),
                             );
                           }).toList(),
+
+                          Divider(),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(15, 20, 15, 0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Total:",
+                                  style: TextStyle(fontWeight: FontWeight.w500),
+                                ),
+                                Text(
+                                  "\$${grandTotal}",
+                                  style: TextStyle(fontWeight: FontWeight.w500),
+                                ),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     ),
                   ],
                 ),
               ),
-
               SizedBox(height: 20),
               Divider(),
               SizedBox(height: 10),
